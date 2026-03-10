@@ -1,0 +1,148 @@
+<div class="app-shell">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Developer daily checklist</p>
+      <h1>Plan, track and ship with confidence</h1>
+      <p class="lede">
+        Keep personal tasks, code reviews and learning goals in one focused view. Built with Spring Boot & Angular
+        signals.
+      </p>
+    </div>
+    <div class="hero__stats">
+      <div>
+        <span>Total</span>
+        <strong>{{ stats().total }}</strong>
+      </div>
+      <div>
+        <span>Todo</span>
+        <strong>{{ stats().todo }}</strong>
+      </div>
+      <div>
+        <span>In progress</span>
+        <strong>{{ stats().inProgress }}</strong>
+      </div>
+      <div>
+        <span>Done</span>
+        <strong>{{ stats().done }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="panel form-panel">
+      <div class="panel__header">
+        <div>
+          <p class="eyebrow">Task composer</p>
+          <h2>{{ formTitle() }}</h2>
+        </div>
+        <button type="button" class="ghost" (click)="refreshTasks()">Refresh</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="saveTask()" novalidate>
+        <label>
+          <span>Title</span>
+          <input type="text" placeholder="Document API for QA" formControlName="title" />
+          <small *ngIf="titleError" class="field-error">{{ titleError }}</small>
+        </label>
+
+        <label>
+          <span>Description</span>
+          <textarea rows="3" placeholder="Add details, links or context" formControlName="description"></textarea>
+        </label>
+
+        <div class="dual">
+          <label>
+            <span>Status</span>
+            <select formControlName="status">
+              <option *ngFor="let status of statuses" [value]="status">
+                {{ statusLabel(status) }}
+              </option>
+            </select>
+          </label>
+
+          <label>
+            <span>Priority</span>
+            <select formControlName="priority">
+              <option *ngFor="let priority of priorities" [value]="priority">
+                {{ priorityLabel(priority) }}
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          <span>Due date</span>
+          <input type="date" formControlName="dueDate" />
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="primary">
+            {{ editingTaskId() ? 'Update task' : 'Add task' }}
+          </button>
+          <button type="button" class="ghost" *ngIf="editingTaskId()" (click)="resetForm()">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel list-panel">
+      <div class="panel__header">
+        <div>
+          <p class="eyebrow">Your flow</p>
+          <h2>Tasks</h2>
+        </div>
+        <div class="filters">
+          <button
+            type="button"
+            *ngFor="let option of filters"
+            [class.active]="activeFilter() === option"
+            (click)="setFilter(option)">
+            {{ statusLabel(option) }}
+          </button>
+        </div>
+      </div>
+
+      <div class="list-controls">
+        <input
+          type="search"
+          placeholder="Search by title or description"
+          [value]="searchTerm()"
+          (input)="handleSearch($any($event.target).value)" />
+      </div>
+
+      <div *ngIf="error()" class="alert">{{ error() }}</div>
+      <div *ngIf="loading()" class="loader">Syncing latest tasks...</div>
+      <p *ngIf="!loading() && !tasks().length" class="empty">No tasks yet. Add your first plan!</p>
+
+      <ul class="task-list">
+        <li *ngFor="let task of tasks(); trackBy: trackByTaskId" class="task">
+          <div class="task__heading">
+            <div>
+              <span [class]="badgeClass(task)">{{ statusLabel(task.status) }}</span>
+              <small class="muted">Priority • {{ priorityLabel(task.priority) }}</small>
+            </div>
+            <div class="task__actions">
+              <button type="button" class="ghost" (click)="editTask(task)">Edit</button>
+              <button type="button" class="ghost danger" (click)="removeTask(task.id)">Delete</button>
+            </div>
+          </div>
+
+          <h3>{{ task.title }}</h3>
+          <p *ngIf="task.description">{{ task.description }}</p>
+
+          <div class="task__footer">
+            <span *ngIf="task.dueDate" class="muted">Due {{ task.dueDate | date: 'mediumDate' }}</span>
+            <div class="status-menu">
+              <button
+                type="button"
+                *ngFor="let status of statuses"
+                [class.active]="task.status === status"
+                (click)="toggleStatus(task, status)">
+                {{ statusLabel(status) }}
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+</div>
