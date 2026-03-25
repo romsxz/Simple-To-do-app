@@ -1,0 +1,91 @@
+# =============================================================================
+# Simple-To-Do-App — root .gitignore
+# Covers: Angular/Node (client), Spring Boot/Maven (server), OS & IDE files
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Angular / Node (client)
+# -----------------------------------------------------------------------------
+client/dist/
+client/tmp/
+client/out-tsc/
+client/bazel-out/
+client/node_modules/
+client/.angular/cache/
+client/coverage/
+client/.sass-cache/
+client/connect.lock
+client/libpeerconnection.log
+client/testem.log
+client/typings/
+npm-debug.log
+yarn-error.log
+
+# -----------------------------------------------------------------------------
+# Spring Boot / Maven (server)
+# -----------------------------------------------------------------------------
+server/target/
+server/HELP.md
+server/.mvn/wrapper/maven-wrapper.jar
+
+# -----------------------------------------------------------------------------
+# IDEs — IntelliJ IDEA
+# -----------------------------------------------------------------------------
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# -----------------------------------------------------------------------------
+# IDEs — Eclipse / STS
+# -----------------------------------------------------------------------------
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# -----------------------------------------------------------------------------
+# IDEs — NetBeans
+# -----------------------------------------------------------------------------
+/nbproject/private/
+/nbbuild/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# -----------------------------------------------------------------------------
+# IDEs — VS Code
+# (keep recommended extensions, tasks, and launch configs; ignore everything else)
+# -----------------------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# -----------------------------------------------------------------------------
+# OS generated files
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# -----------------------------------------------------------------------------
+# Environment / secrets — never commit these
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.properties
+application-prod.properties
